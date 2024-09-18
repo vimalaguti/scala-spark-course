@@ -74,8 +74,7 @@ class WikipediaSuite extends munit.FunSuite:
   test("'occurrencesOfLang' should work for (specific) RDD with one element") {
     assert(initializeWikipediaRanking(), " -- did you fill in all the values in WikipediaRanking (conf, sc, wikiRdd)?")
     val rdd = sc.parallelize(Seq(WikipediaArticle("title", "Java Jakarta")))
-    val res = (occurrencesOfLang("Java", rdd) == 1)
-    assert(res, "occurrencesOfLang given (specific) RDD with one element should equal to 1")
+    assertEquals(occurrencesOfLang("Java", rdd), 1, "occurrencesOfLang given (specific) RDD with one element should equal to 1")
   }
 
   test("'rankLangs' should work for RDD with two elements") {
@@ -83,8 +82,7 @@ class WikipediaSuite extends munit.FunSuite:
     val langs = List("Scala", "Java")
     val rdd = sc.parallelize(List(WikipediaArticle("1", "Scala is great"), WikipediaArticle("2", "Java is OK, but Scala is cooler")))
     val ranked = rankLangs(langs, rdd)
-    val res = ranked.head._1 == "Scala"
-    assert(res)
+    assertEquals(ranked.head._1, "Scala")
   }
 
   test("'makeIndex' creates a simple index with two entries") {
@@ -97,8 +95,7 @@ class WikipediaSuite extends munit.FunSuite:
       )
     val rdd = sc.parallelize(articles)
     val index = makeIndex(langs, rdd)
-    val res = index.count() == 2
-    assert(res)
+    assertEquals(index.count(), 2L)
   }
 
   test("'rankLangsUsingIndex' should work for a simple RDD with three elements") {
